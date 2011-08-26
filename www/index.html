@@ -38,59 +38,66 @@ Checking</small></h2>
 </div>
 <div id="navigation">
 <ul>
-  <li><a href="http://r-forge.r-project.org/projects/georglsm/">Project
-Summary</a></li>
+  <li><a href="http://r-forge.r-project.org/projects/georglsm/">Summary</a></li>
   <li><a href="https://r-forge.r-project.org/forum/?group_id=1198">Forum</a></li>
   <li><a href="https://r-forge.r-project.org/R/?group_id=1198">Download</a></li>
   <li><a href="https://r-forge.r-project.org/scm/?group_id=1198">SCM</a></li>
   <li><a href="#">To Do List<br>
     </a></li>
-  <li><a href="#">About Me</a></li>
+  <li><a href="resume_ljing.pdf">About Me</a></li>
 </ul>
 </div>
 <div id="content">
 <h1>About the Package<br>
 </h1>
-<p>This package mainly deals with generalized linear spatial models.<br>
-&nbsp;1) It performs posterior sampling for parameter estimation,
-prediction, <br>
-&nbsp;&nbsp;&nbsp;&nbsp; and model checking in hierarchical models with
-correlated latent variables; <br>
-&nbsp;2) C++ programs are seamlessly embedded to handle heavy
+<p>This package performs posterior sampling for parameter estimation,
+prediction, and model checking in hierarchical models with
+correlated latent variables. It mainly focuses on generalized linear
+spatial models with count geostatistical data.<br>
+&nbsp;1) Up-to-date robust Markov chain Monte Carlo algorithms is
+applied;<br>
+&nbsp;2) Bayesian model checking methods are applied;<br>
+&nbsp;3) New model checking method based on transformed residuals is
+proposed;<br>
+&nbsp;4) C++ programs are seamlessly embedded to handle heavy
 computational <br>
 &nbsp;&nbsp;&nbsp;&nbsp; tasks of Markov chain generation and large
 matrices computation;<br>
-&nbsp;3) Parallel computing techniques are implemented to further speed
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp; up estimation and prediction; <br>
-&nbsp;4) Results are displayed by a combination of numerical and
+&nbsp;5) Parallel computing techniques are implemented to further speed
+up estimation and prediction; <br>
+&nbsp;6) Results are displayed by a combination of numerical and
 graphical summaries.</p>
 <h1>Package Dependency<br>
 </h1>
 <br>
-R (&gt;= 2.12.0)<br>
+• R (&gt;= 2.12.0)<br>
 • GNU Compiler Collection (GCC): C++ compiler needed<br>
 • GNU Scientific Library (GSL): a numerical library for C and C++<br>
 • LAPACK and BLAS (or ATLAS): for numerical linear algebra operations<br>
 • R packages<br>
-– Rcpp (&gt;= 0.9.4): provides a C++ API as an extension to the R system<br>
-– RcppArmadillo (&gt;= 0.2.19): integration for “Armadillo” which is a
+&nbsp;&nbsp;&nbsp; – Rcpp (&gt;= 0.9.4): provides a C++ API as an
+extension to the R system<br>
+&nbsp;&nbsp;&nbsp; – RcppArmadillo (&gt;= 0.2.19): integration for
+“Armadillo” which is a
 templated C++ linear algebra library<br>
-– RcppGSL (&gt;= 0.1.1): Rcpp integration for GNU GSL<br>
-– {coda}: for Markov chain diagnostics<br>
-– {distrEx}: for calculating Hellinger and Kolmogorov distances between
+&nbsp;&nbsp;&nbsp; – RcppGSL (&gt;= 0.1.1): Rcpp integration for GNU GSL<br>
+&nbsp;&nbsp;&nbsp; – {coda}: for Markov chain diagnostics<br>
+&nbsp;&nbsp;&nbsp; – {distrEx}: for calculating Hellinger and
+Kolmogorov distances between
 two distributions<br>
-– {multicore, snow, Rmpi}: for parallel computing<br>
+&nbsp;&nbsp;&nbsp; – {multicore, snow, Rmpi}: for parallel computing<br>
 • Standard development tools such as make etc.<br>
 <h1>Vignette</h1>
 <p><a href="myPackage_intro.pdf">vignette01</a><br>
 <a href="myPackage_Weed.pdf">vignette02</a><br>
 vignette03<br>
+<span style="font-style: italic;">[incoming ...]</span><br>
 </p>
 <h1>Sample Code<br>
 </h1>
 <p><a href="myPackage_Weed.R">sample_code01</a><br>
 sample_code02<br>
+<span style="font-style: italic;">[incoming ...]</span><br>
 </p>
 </div>
 <div id="footer">
