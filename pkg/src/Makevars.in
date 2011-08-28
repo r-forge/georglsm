@@ -6,5 +6,7 @@ RCPP_LDFLAGS = @RCPP_LDFLAGS@
 
 # combine with standard arguments for R
 PKG_CPPFLAGS = $(GSL_CFLAGS) -I../inst/include
-PKG_LIBS += $(GSL_LIBS) $(RCPP_LDFLAGS)
+
+## Use the R_HOME indirection to support installations of multiple R version
+PKG_LIBS = $(shell $(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()" ) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) $(GSL_LIBS) 
 
