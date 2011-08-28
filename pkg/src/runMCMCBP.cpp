@@ -88,7 +88,7 @@ double kini = as<double>(kini_);
     mat ssave = zeros<mat>(1,run), asave = ssave, ksave = ssave;
     mat msave = zeros<mat>(m.n_rows,run), Ssave = zeros<mat>(n,run); // tildemsave = msave; Spsave=Ssave;
 
-double snew, anew, knew, logp, logq, logalpha;
+double snew, anew, knew, logp, logq;
 mat mnew, tildemnew, gradm, gradmnew;
 mat gradS, gradSnew;
 mat S1new = S1, Snew = S;
