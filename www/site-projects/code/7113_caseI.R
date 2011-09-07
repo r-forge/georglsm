@@ -1,5 +1,4 @@
 ##########################
-### Porject 1 for STA 7113
 ### Case 1
 ##########################
 
@@ -8,8 +7,7 @@ rm(list=ls(all=T))
 
 ########### Data Initializing
 #############################
-#n2 <- read.table("D:/Study/STA 7113/project/no2.txt")
-n2 <- read.table("X:/liang.jing/STA 7113/GLMM/no2.txt")
+n2 <- read.table("no2.txt")
 no2.dat <- data.frame(no2=n2$V1,cars=n2$V2,temp=n2$V3,wind=n2$V4,
 tempdiff=n2$V5,wdirection=n2$V6,hour=n2$V7,day=n2$V8)
 #pairs(no2.dat)
