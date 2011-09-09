@@ -35,22 +35,21 @@ for Generalized Linear Spatial Models<br>
   </li>
 </ul>
 <div style="text-align: right;">Manuscript [<a>under writting</a>]</div>
-<span style="font-weight: bold;">Keywords: </span>incoming ...<br>
-<span style="font-weight: bold;">Abstract: </span>incoming ...<br>
-<br>
-<ul>
-  <li>
-    <h3>Parallel Computing with R and How to Use it on High Performance
-Computing Clusters<br>
-    </h3>
-  </li>
-</ul>
-<div style="text-align: right;">Report [<a>pdf</a>]<br>
-Code
-[<a>snow.R</a>] [snowfall.R] [multicore.R] [qsub.job]<br>
-</div>
-<span style="font-weight: bold;">Keywords: </span>incoming ...<br>
-<span style="font-weight: bold;">Abstract: </span>incoming ...<br>
+<span style="font-weight: bold;">Keywords: </span>hierarchical models,
+robust MCMC, latent variables, parallel computing, R/C++ API, Bayesian
+model checking, transformed residuals<br>
+<span style="font-weight: bold;">Abstract: </span>Model fitting and
+checking has remained difficult for hierarchical models with complex
+structure, such as generalized linear spatial models. Because of
+multi-layer hierarchy and the large number of unobserved latent
+variables, posterior sampling for latent variables and hyper-parameters
+usually cannot achieve good convergence. In this package, we applied
+up-to-date robust MCMC algorithms which not only provide fast mixing
+and quick convergence of the chains but also small correlation between
+posterior samples of different variables or parameters. Furthmore, we
+speed up the generation of Markov chains with parallel computing
+techniques. Also, Bayesian model checking methods and a new method
+based on transformed residuals are implemented ...<br>
 <br>
 <ul>
   <li>
@@ -66,23 +65,50 @@ Code
 <br>
 <ul>
   <li>
+    <h3>Parallel Computing with R and How to Use it on High Performance
+Computing Clusters<br>
+    </h3>
+  </li>
+</ul>
+<div style="text-align: right;">Report [<a href="pdf/paraCompR.pdf">pdf</a>]<br>
+Code
+[<a href="code/snow.R">snow.R</a>] [<a href="code/snow_cv.R">snow_CV.R</a>]
+[<a href="code/snow_bootstrap.R">snow_BS.R</a>]<br>
+[<a href="code/snowfall_example.R">snowfall.R</a>] [<a
+ href="code/multicore.R">multicore.R</a>] [<a href="code/parallel.job">parallel.job</a>]
+[<a href="code/array.job">array.job</a>]<br>
+</div>
+<span style="font-weight: bold;">Keywords: </span>Rmpi, snow,
+snowfall, multicore, wrapper function, HPC, job script<br>
+<span style="font-weight: bold;">Abstract: </span>Methodological
+advances have led to much more computationally demand in statistical
+computing, such as Markov chain Monte Carlo (MCMC) algorithms,
+bootstrapping, cross-validation, Monte Carlo simulation, etc. And many
+areas of statistical applications are experiencing rapid growth in the
+size of data sets. Parallel computing is a common approach to resolve
+these problems. In this paper, four most promising packages for
+parallel computing with R are introduced with examples of
+implementation. And the procedure about how to use R in parallel way on
+high performance computing cluster is illustrated.<br>
+<br>
+<ul>
+  <li>
     <h3>Improved Robust MCMC Algorithm for Hierarchical Models<br>
     </h3>
   </li>
 </ul>
-<div style="text-align: right;">Report [<a href="pdf/Robust_MCMC.pdf">pdf</a>]
-|
-Code [<a href="email:ljing918@gmail.com">request</a>]</div>
+<div style="text-align: right;">Report [<a href="pdf/Robust_MCMC.pdf">pdf</a>]</div>
 <span style="font-weight: bold;">Keywords: </span>Hastings-within-Gibbs,
 slow
-mixing, group updating, Langevin algorithm, data-corrected
+mixing,
+group updating, Langevin algorithm, data-corrected
 parameterization,
 flat prior<br>
 <span style="font-weight: bold;">Abstract: </span>In this paper, three
-important techniques are discussed with details: 1) group updating
-scheme; 2) Langevin algorithm; 3) data-corrected parameterization. They
-largely improve the performance of Hastings-within-Gibbs<br>
-algorithm. And these improvements are illustrated via application on a<br>
+important techniques are discussed with details: group updating
+scheme, Langevin algorithm, data-corrected parameterization. They
+largely improve the performance of Hastings-within-Gibbs algorithm. And
+these improvements are illustrated through application on a
 hierarchical model with Rongelap data.<br>
 <br>
 <ul>
@@ -93,8 +119,7 @@ on Hierarchical Models<br>
   </li>
 </ul>
 <div style="text-align: right;">Report [<a
- href="pdf/Hastings_within_Gibbs.pdf">pdf</a>] | Code [<a
- href="email:ljing918@gmail.com">request</a>]</div>
+ href="pdf/Hastings_within_Gibbs.pdf">pdf</a>]</div>
 <span style="font-weight: bold;">Keywords: </span>MCMC, Gibbs sampler,
 Metropolis-Hastings, "fix-scan", slow mixing<br>
 <span style="font-weight: bold;">Abstract: </span>In this paper,
