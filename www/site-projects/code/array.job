@@ -1,0 +1,14 @@
+#!/bin/bash
+#$ -N R-array
+#$ -o R_jobarray.log
+#$ -j y
+#$ -cwd
+#$ -t 1-10
+#$ -M liang.jing@utsa.edu
+#$ -m e
+
+setenv PATH ${PATH}:/share/apps/gsl/bin
+setenv LD_LIBRARY_PATH /share/apps/gsl/lib:${LD_LIBRARY_PATH}
+
+R --vanilla --args $SGE_TASK_ID < test_jobarray.R
+

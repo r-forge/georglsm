@@ -1,0 +1,25 @@
+#!/bin/bash
+# The name of the job
+#$ -N R-parallel
+# Giving the name of the output log file
+#$ -o R_parallel.log
+# Combining output/error messages into one file
+#$ -j y
+# One needs to tell the queue system
+# to use the current directory as the working directory
+# Or else the script may fail as it will execute
+# in your top level home directory /home/username
+#$ -cwd
+# Here we tell the queue that we want the orte parallel
+# enivironment and request 5 slots
+# This option take the following form: -pe nameOfEnv min-Max
+#$ -pe orte 5-10
+
+# Now come the commands to be executed
+setenv PATH ${PATH}:/share/apps/gsl/bin
+setenv LD_LIBRARY_PATH /share/apps/gsl/lib:${LD_LIBRARY_PATH}
+
+/opt/openmpi/bin/mpirun -n $NSLOTS R --vanilla < test_snow_bootstrap.R > test_snow_bootstrap.log
+
+exit 0
+
