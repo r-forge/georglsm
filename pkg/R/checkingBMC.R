@@ -51,7 +51,7 @@ repYpost <- function(res.m, L){
   n <- dim(S.mtx)[1]
   N.sim <- dim(S.mtx)[2]
   lamda.mtx <- exp(S.mtx)*matrix(rep(L, times=N.sim) ,n,)
-  matrix(rpois(rep(1,length(S.mtx)),as.vector(lamda.mtx)),,dim(S.mtx)[2])
+  matrix(rpois(length(lamda.mtx), as.vector(lamda.mtx)), n, N.sim)
 }
 ####################################
 #### p/RPS calculation and plot

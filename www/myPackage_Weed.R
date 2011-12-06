@@ -9,13 +9,11 @@ rm(list = ls(all = TRUE))
 # Load myPackage
 require(myPackage)
 myPackage_hello_world()
-require(multicore)
-options(cores=5)
-getOption("cores")
 data(package = "myPackage")
 
 # load data and plot
 data(datWeed)
+dat <- Weed
 n <- nrow(dat)
 YRaw <- dat[,3]
 locRaw <- dat[,1:2]
@@ -31,23 +29,36 @@ loc <- locRaw.u[ind,]
 plotData(Y/L, loc, size=c(0.3, 3.7))
 
 # tuning and run MCMC algorithm
-input0 <- MCMCinput( run=4000, run.S=1, rho.family="rhoPowerExp", 
+input0 <- MCMCinput( run=2000, run.S=1, rho.family="rhoPowerExp", 
           Y.family = "Poisson", ifkappa=0,
           scales=c(0.5, 3.5, 0.9, 0.6, 0.5), 
           phi.bound=c(0.005, 1), 
           initials=list(c(-1), 1, 0.1, 1) )
+
+# Single chain MCMC
 res <- runMCMC(Y, L = L, loc=loc, X=NULL, MCMCinput = input0 )
 # Cut chains
-res.m <- cutChain(res, chain.ind=1:4, burnin=500, thining=10)
+res.m <- cutChain(res, chain.ind=1:4, burnin=500, thining=1)
 
-# (alternative Parallel version)
+##################################### NOT RUN
+# Mltiple chain MCMC 
+# !!!CAUTION!!!
+# runMCMC.multiChain() won't works on R with optimized BLAS
+# runMCMC.sf works but won't' gain significant speed
+
+# parallel with {multicore}
 require(multicore)
-options(cores=5)
 res.prl <- runMCMC.multiChain(Y, L = L, loc=loc, X=NULL, 
-            MCMCinput = input0, n.chn = 5)
+            MCMCinput = input0, n.chn = 2, n.cores = 2)
+# parallel with {snowfall}
+require(snowfall)
+res.prl <- runMCMC.sf(Y, L = L, loc=loc, X=NULL, 
+            MCMCinput = input0, n.chn = 8, n.cores = 8)
+# Cut chains                    
 res.m.prl <- lapply(res.prl, cutChain, chain.ind=1:4, burnin=200, thining=10)
 res.mix <- mixChain(res.m.prl)
-res.m <- res.mix
+res.m <- res.mix                    
+##################################### NOT RUN
 
 # Examine chains
 require(coda)

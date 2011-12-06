@@ -286,11 +286,11 @@ if(ifkappa!=0)
 NumericVector acc = NumericVector::create( _["accS1"] = accS1/run/nmLan,
 	_["accm"] = accm/run, _["accs"] = accs/run, _["acca"] = acca/run, _["acck"] = acck/run );
 
-return List::create( _["S.posterior"] = wrap(Ssave),
-	_["m.posterior"] = wrap(msave),
-	_["s.posterior"] = wrap(ssave),
-	_["a.posterior"] = wrap(asave),
-	_["k.posterior"] = wrap(ksave),
+return List::create( _["S.posterior"] = Ssave,
+	_["m.posterior"] = msave,
+	_["s.posterior"] = ssave,
+	_["a.posterior"] = asave,
+	_["k.posterior"] = ksave,
 	_["Acceptance Rate"] = acc );
 }
 else
@@ -298,10 +298,10 @@ else
 NumericVector acc = NumericVector::create( _["accS1"] = accS1/run/nmLan,
 	_["accm"] = accm/run, _["accs"] = accs/run, _["acca"] = acca/run );
 
-return List::create( _["S.posterior"] = wrap(Ssave),
-	_["m.posterior"] = wrap(msave),
-	_["s.posterior"] = wrap(ssave),
-	_["a.posterior"] = wrap(asave),
+return List::create( _["S.posterior"] = Ssave,
+	_["m.posterior"] = msave,
+	_["s.posterior"] = ssave,
+	_["a.posterior"] = asave,
 	_["Acceptance Rate"] = acc );
 }
 

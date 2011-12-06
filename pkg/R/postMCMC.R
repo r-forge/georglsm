@@ -1,10 +1,14 @@
 ####################################
 #### cut MCMC chains
 ####################################
-cutChain <- function(res, chain.ind, burnin, thining){
+cutChain <- function(res, chain.ind=2:4, burnin, thining){
   ind <- seq(burnin+1, dim(res[[1]])[2], by = thining)
   if( length(setdiff(chain.ind, 1:length(res)))>0 ) stop("chain.ind is out of range!")
-  lapply(res[chain.ind], function(x) x[, ind])
+  lapply(res[chain.ind], function(x, ind){ 
+    if(is.matrix(x)){ xx <- x[, ind]
+                    } else{xx <- x[ind]}
+    xx
+    }, ind)
 }
 ####################################
 #### mix multiple MCMC chains

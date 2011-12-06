@@ -513,8 +513,8 @@ s,@GSL_CONFIG@,|#_!!_#|/usr/bin/gsl-config,g
 s,@RSCRIPT@,|#_!!_#|yes,g
 s,@GSL_CFLAGS@,|#_!!_#|-I/usr/include,g
 s,@GSL_LIBS@,|#_!!_#|-L/usr/lib -lgsl -lgslcblas -lm,g
-s,@RCPP_CXXFLAGS@,|#_!!_#|-I/home/dying/R/x86_64-pc-linux-gnu-library/2.13/Rcpp/include,g
-s,@RCPP_LDFLAGS@,|#_!!_#|-L/home/dying/R/x86_64-pc-linux-gnu-library/2.13/Rcpp/lib -lRcpp -Wl\,-rpath\,/home/dying/R/x86_64-pc-linux-gnu-library/2.13/Rcpp/lib,g
+s,@RCPP_CXXFLAGS@,|#_!!_#|-I/home/dying/R/x86_64-unknown-linux-gnu-library/2.13/Rcpp/include,g
+s,@RCPP_LDFLAGS@,|#_!!_#|-L/home/dying/R/x86_64-unknown-linux-gnu-library/2.13/Rcpp/lib -lRcpp -Wl\,-rpath\,/home/dying/R/x86_64-unknown-linux-gnu-library/2.13/Rcpp/lib,g
 s,@LIBOBJS@,|#_!!_#|,g
 s,@LTLIBOBJS@,|#_!!_#|,g
 :end
