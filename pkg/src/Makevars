@@ -1,0 +1,12 @@
+
+# set by configure
+GSL_CFLAGS = -I/usr/include
+GSL_LIBS   = -L/usr/lib -lgsl -lgslcblas -lm
+RCPP_LDFLAGS = -L/home/dying/R/x86_64-unknown-linux-gnu-library/2.13/Rcpp/lib -lRcpp -Wl,-rpath,/home/dying/R/x86_64-unknown-linux-gnu-library/2.13/Rcpp/lib
+
+# combine with standard arguments for R
+PKG_CPPFLAGS = $(GSL_CFLAGS) -I../inst/include
+
+## Use the R_HOME indirection to support installations of multiple R version
+PKG_LIBS = $(shell $(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()" ) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) $(GSL_LIBS) 
+
