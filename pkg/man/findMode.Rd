@@ -1,21 +1,22 @@
 \name{findMode}
 \alias{findMode}
 
-\title{Find Mode for a Given Sample}
+\title{Estimate Mode of the Posterior Samples}
 
 \usage{
-findMode(x)
+findMode(x, ...)
 }
 
 \arguments{
-  \item{x}{a vector of samples.}
+  \item{x}{a vector of posterior samples}
+  \item{...}{other parameters used when estimating then empirical density function; see \code{?density}}
 }
 
 \description{
-  This function finds the mode of empirical density functior for given sample.}
+  This function estimates the mode of empirical density function for a given posterior samples.}
 
 \details{
-  ...
+  This function uses \code{density} function to estimate the empirical density function.
 } 
 \value{
  The value of mode.
@@ -35,4 +36,4 @@ findMode(rnorm(1000))
 
 }
 
-\keyword{mode}
+\keyword{MCMC}

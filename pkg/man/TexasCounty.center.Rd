@@ -12,13 +12,13 @@ data(TexasCounty_center)
 }
 
 \description{
-  This data set contains the center locations for all Texas countries.}
+  This data set contains the locations of centers for all Texas countries.}
 
 \details{
-  ...
+  
 } 
 \value{
-
+  A data.frame with 254 observations and 3 variables.
 }
 
 \author{
@@ -27,7 +27,6 @@ data(TexasCounty_center)
 
 \examples{
 \dontrun{
-
 data(TexasCounty_center)
 str(TexasCounty.center)
 plotDataBD(TexasCounty.boundary)

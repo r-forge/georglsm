@@ -1,25 +1,25 @@
 \name{baseline.dist}
 \alias{baseline.dist}
 
-\title{Generate Baseline Samples for Standard Normal}
+\title{Generate Distance Samples to Build Baseline Distribution}
 
 \usage{
 baseline.dist(n, iter)
 }
 
 \arguments{
-  \item{n}{the number of residuals.}
-  \item{iter}{the number of baseline samples to generate.}
+  \item{n}{the number of residuals}
+  \item{iter}{the number of distance samples to generate}
 }
 
 \description{
-  This function generates baseline samples for standard normal distribution.}
+  This function generates the samples of distance to build the baseline distribution for standard normal.}
 
 \details{
-  ...
+  \code{HellingerDist} and \code{KolmogorovDist} functions in \code{{distrEx}} are used to compute the distances. See \code{?HellingerDist} and \code{?KolmogorovDist} for details about how the distances are computed.
 } 
 \value{
- A matrix of distances.
+ A \eqn{iter \times 3} matrix for three types of distance: "Discrete Hellinger", "Smooth Hellinger" and "Kolmogorov". 
 }
 
 \author{
@@ -28,12 +28,13 @@ baseline.dist(n, iter)
 
 \examples{
 \dontrun{
-# (time-consuming! only need to run once for date sets with same size)
-d.base <- baseline.dist(length(etran), iter=1000) }
+# Time-consuming! Run once with large "iter" and 
+# save the results for future use
+d.base <- baseline.dist(50, iter=100) }
 }
 
 \seealso{
-\code{\link{tranR}}, \code{\link{e2dist}}
+\code{\link{d.base}}, \code{\link{baseline.parallel}}, \code{\link{plot_baseline}}, \code{\link{pOne}}.
 }
 
-\keyword{Model Checking}
+\keyword{Transformed Residual Checking}

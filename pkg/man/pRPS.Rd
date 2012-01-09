@@ -8,18 +8,18 @@ pRPS(T.obs, T.rep)
 }
 
 \arguments{
-  \item{T.obs}{the observed statistic.}
-  \item{T.rep}{the replicated statistics.}
+  \item{T.obs}{a value which indicates the observed statistic}
+  \item{T.rep}{a vector which indicates the reference statistics}
 }
 
 \description{
-  This function calculates p-value of RPS by comparing observed and replicated statistics.}
+  This function calculates p-value and relative predictive surprise (RPS) by comparing observed and reference statistics.}
 
 \details{
-  ...
+  \code{density} function is used to compute the empirical density of reference statistics.
 } 
 \value{
- p-value and RPS.
+ A vector of p-value and RPS.
 }
 
 \author{
@@ -32,7 +32,7 @@ pRPS(2, rnorm(1000)) }
 }
 
 \seealso{
-\code{\link{BMCT}}, \code{\link{plot_pRPS}}
+\code{\link{BMCT}}, \code{\link{plot_pRPS}}.
 }
 
-\keyword{Model Checking}
+\keyword{Bayesian Model Checking}

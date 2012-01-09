@@ -1,22 +1,24 @@
 \name{plot_etran}
 \alias{plot_etran}
 
-\title{Calculate Transformed Residuals for Observed Data}
+\title{Plot Transformed Residuals}
 
 \usage{
 plot_etran(e.tran, fig = 1:4)
 }
 
 \arguments{
-  \item{e.tran}{the transformed residuals.}
-  \item{fig}{indicates which plot(s) to plot.}
+  \item{e.tran}{a vector which indicates the transformed residuals}
+  \item{fig}{a vector which indicates which types to plot: 1 indicates scatter plot, 2 indicates QQ-plot, 3 indicates density plot, and 4 indicates relative density plot (with standard normal distribution served as the base)}
 }
 
 \description{
-  This function plots transformed residuals in different type of plots.}
+  This function plots transformed residuals in different types.}
 
 \details{
-  ...
+  \code{density} function is used to compute the empirical density.
+  
+  \code{reldist} function in \code{{reldist}} is used to compute the relative density.
 } 
 \value{
 
@@ -28,13 +30,12 @@ plot_etran(e.tran, fig = 1:4)
 
 \examples{
 \dontrun{
-Yrep <- repYeb(N.sim=2000, loc, L, beta = 5, sigma = 1, phi = 0.1)
-etran <- tranR(Y.obs, Y.rep, discrete = TRUE)
-plot_etran(etran)   }
+require(reldist)
+plot_etran(rnorm(200), fig=c(1,4))   }
 }
 
 \seealso{
 \code{\link{tranR}}
 }
 
-\keyword{Model Checking}
+\keyword{Transformed Residual Checking}

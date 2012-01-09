@@ -8,17 +8,17 @@ e2dist(e.tran)
 }
 
 \arguments{
-  \item{e.tran}{the transformed residuals.}
+  \item{e.tran}{a vector which indicates the transformed residuals}
 }
 
 \description{
-  This function calcualtes different distances between the empirical distribution of transformed residuals and standard normal.}
+  This function calcualtes three types of distance between the empirical distribution of transformed residuals and standard normal.}
 
 \details{
-  ...
+  \code{HellingerDist} and \code{KolmogorovDist} functions in \code{{distrEx}} are used to compute the distances. See \code{?HellingerDist} and \code{?KolmogorovDist} for details about how the distances are computed.
 } 
 \value{
- A matrix of distances.
+ A vector with length 3 containing "Discrete Hellinger", "Smooth Hellinger" and "Kolmogorov" distances.
 }
 
 \author{
@@ -27,14 +27,12 @@ e2dist(e.tran)
 
 \examples{
 \dontrun{
-Yrep <- repYeb(N.sim=2000, loc, L, beta = 5, sigma = 1, phi = 0.1)
-etran <- tranR(Y.obs, Y.rep, discrete = TRUE)
 require(distrEx)
-e2dist(etran)       }
+e2dist(rnorm(200))       }
 }
 
 \seealso{
-\code{\link{tranR}}, \code{\link{plot_etran}}
+\code{\link{tranR}}, \code{\link{baseline.dist}}, \code{\link{pOne}}.
 }
 
-\keyword{Model Checking}
+\keyword{Transformed Residual Checking}

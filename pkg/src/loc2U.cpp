@@ -1,7 +1,5 @@
-#include <RcppArmadillo.h>
 
-using namespace Rcpp;
-using namespace arma;
+#include "runMCMC.h"
 
 
 // Define function as extern with RcppExport

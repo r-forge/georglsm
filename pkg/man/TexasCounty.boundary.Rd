@@ -15,10 +15,10 @@ data(TexasCounty_boundary)
   This data set contains the boundary information for all Texas countries.}
 
 \details{
-  ...
+  
 } 
 \value{
-
+  A list with 254 elements each of which contains the boundary information for one county.
 }
 
 \author{
@@ -27,10 +27,10 @@ data(TexasCounty_boundary)
 
 \examples{
 \dontrun{
-
 data(TexasCounty_boundary)
-length(TexasCounty.boundary)
-plotDataBD(TexasCounty.boundary)
+length(TexasCounty.boundary); names(TexasCounty.boundary)
+plotDataBD(TexasCounty.boundary, xlab = "Longitude", ylab = "Latitude")
+text(TexasCounty.center[,2:3], names(TexasCounty.boundary), cex=0.4)
 }
 }
 

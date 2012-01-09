@@ -15,6 +15,10 @@ if(is.data.frame(x0)){
 n <- nrow(x)
 N <- ncol(x)
 x.name <- dimnames(x)[[2]]
+x <- apply(x, 2, function(t){
+  tmax <- max(t); tmin <- min(t)
+  0.9*(t-tmin)/(tmax-tmin)+0.1
+})
 agl <- (0:(N-1))*(2*pi/N)
 agl.base <- seq(0,2*pi,len=500)
 loc <- loc.n <- vector(mode="list", length=n)

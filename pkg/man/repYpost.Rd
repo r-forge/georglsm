@@ -1,22 +1,23 @@
 \name{repYpost}
 \alias{repYpost}
 
-\title{Generation of Replicated Data Sets}
+\title{Generate Replicated Data with Posterior Samples of Latent Variables}
 
 \usage{
-repYpost(res.m, L)
+repYpost(res.m, L, Y.family="Poisson")
 }
 
 \arguments{
-  \item{res.m}{the posterior samples of latern variables to be used for generation.}
-  \item{L}{the time duration for all the locations.}
+  \item{res.m}{a list with elements containing the posterior samples of latent variables and parameters for observed locations}
+  \item{L}{a vector of length n; it indicates the time duration during which the Poisson counts are accumulated, or the total number of trials for Binomial response}
+  \item{Y.family}{take the value of \code{"Poisson"} or \code{"Binomial"} which indicates Poisson or Binomial distribution for response variables}
 }
 
 \description{
-  This function generats replicated data sets based on posterior samples of latern variables.}
+  This function generates replicated data sets based on posterior samples of latent variables.}
 
 \details{
-  ...
+  
 } 
 \value{
  A matrix of replicated data sets.
@@ -28,7 +29,6 @@ repYpost(res.m, L)
 
 \examples{
 \dontrun{
-# Estimation from posterior samples
 Yrep.post <- repYpost(res.m, L) }
 }
 
@@ -36,4 +36,4 @@ Yrep.post <- repYpost(res.m, L) }
 \code{\link{repYeb}}
 }
 
-\keyword{Replicated Data}
+\keyword{Data Simulation}

@@ -2,16 +2,6 @@
 #include "runMCMC.h"
 
 
-SEXP myPackage_hello_world(){
-    using namespace Rcpp ;
-
-    CharacterVector x = CharacterVector::create( "Hello, world!", "Loading is successful!" )  ;
-    NumericVector y   = NumericVector::create( 0, 1 ) ;
-    List z            = List::create( x, y ) ;
-
-    return z ;
-}
-
 double logfY_Binorm(mat S, mat Y, mat L)
 {
     double res = as_scalar( trans(Y)*S - accu( L%log(exp(S)+1) ) );

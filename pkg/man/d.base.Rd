@@ -15,7 +15,7 @@ data(Dbase_n100N5000)
   This data set contains baseline samples for 100 residuals with 5000 iterations.}
 
 \details{
-  ...
+  A data.frame "d.base" with 5000 observations and 3 variables will be loaded.
 } 
 \value{
 
@@ -35,7 +35,7 @@ plot_baseline(d.base[,1], colnames(d.base)[1])
 }
 
 \seealso{
-\code{\link{baseline.dist}}, \code{\link{plot_baseline}}
+\code{\link{baseline.dist}}, \code{\link{plot_baseline}}, \code{\link{pOne}}.
 }
 
-\keyword{Model Checking}
+\keyword{Transformed Residual Checking}

@@ -1,6 +1,9 @@
 ####################################
 #### Simulate locations
 ####################################
+locGrid <- function(x, y, nx, ny){
+  expand.grid(seq(0, x, length=nx), seq(0, y, length=ny))
+}
 locCircle <- function(r, np){
   agl <- seq(0, 2*pi, length=np+1)[1:np]
   cbind(r*cos(agl), r*sin(agl))
@@ -35,7 +38,7 @@ simData <- function(loc, L=0, X=NULL, beta=0, cov.par, rho.family = "rhoPowerExp
   } else if(Y.family=="Binomial"){
           Y <- rbinom(n, L, exp(S)/(1+exp(S)))
           }
-  list(data=Y, latent.variables=S)
+  list(data=Y, latent=S)
   }
 ####################################
 #### END

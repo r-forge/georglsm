@@ -1,23 +1,23 @@
 \name{plot_pRPS}
 \alias{plot_pRPS}
 
-\title{Plot for Observed and Replicated Statistics}
+\title{Plot Observed vs. Reference Diagnostic Statistics}
 
 \usage{
 plot_pRPS(T.obs, T.rep, nm = "x")
 }
 
 \arguments{
-  \item{T.obs}{the observed statistic.}
-  \item{T.rep}{the replicated statistics.}
-  \item{nm}{the label of statistics.}
+  \item{T.obs}{a value which indicates the observed statistic}
+  \item{T.rep}{a vector which indicates the reference statistics}
+  \item{nm}{the name of the diagnostic statistics}
 }
 
 \description{
-  This function plots the observed statistic and the empirical density of replicated statistics.}
+  This function plots the observed statistic vs. the empirical density of reference statistics.}
 
 \details{
-  ...
+  \code{density} function is used to compute the empirical density of reference statistics.
 } 
 \value{
  A plot.
@@ -29,11 +29,11 @@ plot_pRPS(T.obs, T.rep, nm = "x")
 
 \examples{
 \dontrun{
-plot_pRPS(2, rnorm(1000)) }
+plot_pRPS(1, rnorm(1000)) }
 }
 
 \seealso{
-\code{\link{BMCT}}, \code{\link{pRPS}}
+\code{\link{BMCT}}, \code{\link{pRPS}}.
 }
 
-\keyword{Model Checking}
+\keyword{Bayesian Model Checking}

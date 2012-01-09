@@ -1,27 +1,27 @@
 \name{cutChain}
 \alias{cutChain}
 
-\title{Modify MCMC Chains with Burn-in and Thining}
+\title{Modify Markov Chains with Burn-in and Thining}
 
 \usage{
-cutChain(res, chain.ind, burnin, thining)
+cutChain(res, chain.ind=2:4, burnin, thinning)
 }
 
 \arguments{
-  \item{res}{the posterior samples of latent variables and parameters.}
-  \item{chain.ind}{the index of chains.}
-  \item{burnin}{the number of samples for burn-in.}
-  \item{thining}{the number of samples for thining.}
+  \item{res}{a list with elements containing the posterior samples of latent variables and parameters; usually the output from \code{\link{runMCMC}} }
+  \item{chain.ind}{the index of elements in "res" that will be modified}
+  \item{burnin}{the number for burn-in}
+  \item{thinning}{the number for thining}
 }
 
 \description{
-  This function takes the results from running MCMC algorithms and modifies the chains with burn-in and thining.}
+  This function takes the results from \code{\link{runMCMC}} and modifies the chains of posterior samples for burn-in and thinning.}
 
 \details{
-  ...
+  
 } 
 \value{
- A list of modified chains.
+ A list with elements containing the modified posterior samples.
 }
 
 \author{
@@ -30,13 +30,13 @@ cutChain(res, chain.ind, burnin, thining)
 
 \examples{
 \dontrun{
-res <- runMCMC(Y, L=0, loc=loc, X=loc, MCMCinput = input )
+res <- runMCMC(Y, L=0, loc=loc, MCMCinput = input )
 res.m <- cutChain(res, chain.ind=1:4, burnin=100, thining=10)
 }
 }
 
 \seealso{
-   \code{\link{runMCMC}}, \code{\link{runMCMC.multiChain}}.
+   \code{\link{runMCMC}}, \code{\link{runMCMC.multiChain}}, \code{\link{mixChain}}.
 }
 
 \keyword{MCMC}

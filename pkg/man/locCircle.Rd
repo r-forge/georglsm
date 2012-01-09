@@ -13,7 +13,7 @@ locCircle(r, np)
 }
 
 \description{
-  This function simulates a given number of locations equally distributed on the circle.
+  This function simulates a given number of locations equally distributed on a circle.
 }
 
 \details{
@@ -21,7 +21,7 @@ locCircle(r, np)
 }
 
 \value{
-  A np*2 matrix indicates the x-y coordinates of the locations.
+  A \eqn{np \times 2} matrix indicates the x-y coordinates of the locations.
 }
 
 \author{
@@ -35,9 +35,10 @@ locCircle(r, np)
 }
 
 \seealso{
+   \code{\link{locGrid}},
    \code{\link{locSquad}},
    \code{\link{simData}},
    \code{\link{plotData}}.
 }
 
-\keyword{location}
+\keyword{Location}

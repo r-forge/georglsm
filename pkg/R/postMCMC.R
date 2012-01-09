@@ -1,8 +1,8 @@
 ####################################
 #### cut MCMC chains
 ####################################
-cutChain <- function(res, chain.ind=2:4, burnin, thining){
-  ind <- seq(burnin+1, dim(res[[1]])[2], by = thining)
+cutChain <- function(res, chain.ind=2:4, burnin, thinning){
+  ind <- seq(burnin+1, dim(res[[1]])[2], by = thinning)
   if( length(setdiff(chain.ind, 1:length(res)))>0 ) stop("chain.ind is out of range!")
   lapply(res[chain.ind], function(x, ind){ 
     if(is.matrix(x)){ xx <- x[, ind]
@@ -31,9 +31,9 @@ res.mix
 ####################################
 #### Plot autocorrelations
 ####################################
-plotACF <- function(S.mcmc){
-for(i in 1:ncol(S.mcmc)){
-  temp <- acf(S.mcmc[,i], plot=FALSE)
+plotACF <- function(S.mcmc, lags = NULL){
+for(i in 1:nrow(S.mcmc)){
+  temp <- acf(S.mcmc[i,], plot=FALSE, lag.max = lags)
   if(i==1){
     plot(as.vector(temp$lag), as.vector(temp$acf), 
         type="l", xlab="Lag", ylab="Autocorrelation")
@@ -43,8 +43,8 @@ for(i in 1:ncol(S.mcmc)){
 ####################################
 #### Find mode 
 ####################################
-findMode <- function(x){
-  tmp <- density(x)
+findMode <- function(x, ...){
+  tmp <- density(x, ...)
   ind <- which(tmp$y==max(tmp$y))
   tmp$x[ind[1]]
 }

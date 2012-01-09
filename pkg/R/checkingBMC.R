@@ -2,14 +2,14 @@
 ####################################
 #### EBprior replicated generating
 ####################################
-repYeb <- function(N.sim, loc, L, X=NULL, rho.family="rhoPowerExp", res.m=NULL, est="mode", beta=NULL, sigma=NULL, phi=NULL, k=1){
+repYeb <- function(N.sim, loc, L, X=NULL, rho.family="rhoPowerExp", Y.family="Poisson", res.m=NULL, est="mode", beta=NULL, sigma=NULL, phi=NULL, k=1){
   n <- nrow(loc)
   U <- loc2U(loc)
   D <- cbind( rep(1, n), X )
   
   if(is.null(res.m)){
     if( any(c(is.null(beta), is.null(sigma), is.null(phi))) ){
-      stop("The parameters contain NULL!")
+      stop("res.m and the parameters are missing!")
     } else{
       m.avg <- beta; s.avg <- sigma; a.avg <- phi; k.avg <- k
     }
@@ -40,18 +40,33 @@ repYeb <- function(N.sim, loc, L, X=NULL, rho.family="rhoPowerExp", res.m=NULL, 
   A <- chol(Z)
   # A%*%rnorm(n) + intcpt
   S.mtx <- A%*%matrix(rnorm(n*N.sim),n,) + matrix(rep(intcpt,N.sim),n,)
-  lamda.mtx <- exp(S.mtx)*matrix(rep(L, times=N.sim) ,n,)
-  matrix(rpois(rep(1,length(S.mtx)),as.vector(lamda.mtx)),,dim(lamda.mtx)[2])
+    
+  if(Y.family=="Poisson"){
+    lamda.mtx <- exp(S.mtx)*matrix(rep(L, times=N.sim) ,n,)
+    Y.mtx <- matrix(rpois(rep(1,length(S.mtx)),as.vector(lamda.mtx)), n,)
+  } else if(Y.family=="Binomial"){
+          p.mtx <- exp(S.mtx)/(1+exp(S.mtx))
+          Y.mtx <- matrix(rbinom(rep(1,length(S.mtx)), rep(L, times=N.sim), as.vector(p.mtx)), n,)
+          }
+  Y.mtx
+  
 }
 ####################################
 #### Post replicated generating
 ####################################
-repYpost <- function(res.m, L){
+repYpost <- function(res.m, L, Y.family="Poisson"){
   S.mtx <- res.m$S
   n <- dim(S.mtx)[1]
   N.sim <- dim(S.mtx)[2]
-  lamda.mtx <- exp(S.mtx)*matrix(rep(L, times=N.sim) ,n,)
-  matrix(rpois(length(lamda.mtx), as.vector(lamda.mtx)), n, N.sim)
+  
+  if(Y.family=="Poisson"){
+    lamda.mtx <- exp(S.mtx)*matrix(rep(L, times=N.sim) ,n,)
+    Y.mtx <- matrix(rpois(rep(1,length(S.mtx)), as.vector(lamda.mtx)), n,)
+  } else if(Y.family=="Binomial"){
+          p.mtx <- exp(S.mtx)/(1+exp(S.mtx))
+          Y.mtx <- matrix(rbinom(rep(1,length(S.mtx)), rep(L, times=N.sim), as.vector(p.mtx)), n,)
+          }
+  Y.mtx
 }
 ####################################
 #### p/RPS calculation and plot
@@ -69,7 +84,7 @@ pRPS <- function(T.obs,T.rep)
     }
     Rps <- h.obs/h.max
     res <- c(p,Rps)
-    names(res) <- c("p","RPS")
+    names(res) <- c("p-value","RPS")
     res
   }
 ###
@@ -91,9 +106,7 @@ BMCT <- function(Y.obs, Y.rep, funcT, ifplot=FALSE)
   T.obs <- funcT(as.vector(Y.obs))
   T.rep <- apply(Y.rep,2,funcT)
   if(ifplot) plot_pRPS(T.obs,T.rep, "t")
-  res <- pRPS(T.obs,T.rep)
-  names(res) <- c("p-value","RPS")
-  res
+  pRPS(T.obs,T.rep)
 }
 ####################################
 #### END

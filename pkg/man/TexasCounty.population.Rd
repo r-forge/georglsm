@@ -15,10 +15,12 @@ data(TexasCounty_population)
   This data set contains the population information for all Texas countries.}
 
 \details{
-  ...
+   Year: 2009
+   
+   Source: U.S. Census Bureau, Small Area Estimates Branch, Poverty and Median Income Estimates   
 } 
 \value{
-
+  A data.frame with 254 observations and 3 variables.
 }
 
 \author{
@@ -27,7 +29,6 @@ data(TexasCounty_population)
 
 \examples{
 \dontrun{
-
 data(TexasCounty_population)
 str(TexasCounty.population)
 }

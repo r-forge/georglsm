@@ -2,18 +2,29 @@
 ####################################
 #### Uniformize locations
 ####################################
-unifLoc <- function(loc, scale=1){
-    res <- apply( loc, 2, function(x) (x - min(x))/(max(x) - min(x)) )
-    res*scale
+unifLoc <- function(loc, length=1){
+    lmax <- max(loc); lmin <- min(loc)
+    res <- (loc - lmin)/(lmax - lmin) 
+    res*length
   }
 ####################################
 #### locations to Distance matrix
 ####################################
-loc2U <- function(loc_){
-  .Call( "loc2Ucpp", loc_, PACKAGE = "myPackage" )
+loc2U <- function(loc){
+  if(is.data.frame(loc)) loc <- as.matrix(loc)
+  if(!is.matrix(loc)) {
+    stop("loc needs to be a matrix or data.frame!")
+    return()
+  }
+  .Call( "loc2Ucpp", loc, PACKAGE = "geoCount" )
 }
 # R version
-loc2U_R <- function(loc){ 
+loc2U_R <- function(loc){
+  if(is.data.frame(loc)) loc <- as.matrix(loc)
+  if(!is.matrix(loc)) {
+    stop("loc needs to be a matrix or data.frame!")
+    return()
+  }
 n <- nrow(loc)
 dst <- function(t){sqrt((t[1]-t[3])^2+(t[2]-t[4])^2)}
 U <- matrix(0, n, n)
@@ -25,11 +36,27 @@ U
 ####################################
 #### locations to Distance matrix
 ####################################
-locUloc <- function(loc_, locp_){
-  .Call( "locUloccpp", loc_, locp_, PACKAGE = "myPackage" )
+locUloc <- function(loc, locp){
+  if(is.data.frame(loc)) loc <- as.matrix(loc)
+  if(is.data.frame(locp)) locp <- as.matrix(locp)
+  if(is.vector(loc)) loc <- matrix(loc,,2)
+  if(is.vector(locp)) locp <- matrix(locp,,2)
+  if( (!is.matrix(loc)) || (!is.matrix(locp)) ){
+    stop("Both loc and locp needs to be a matrix or data.frame!")
+    return()
+  } 
+  .Call( "locUloccpp", loc, locp, PACKAGE = "geoCount" )
 }
 # R version
 locUloc_R <- function(loc, locp){
+  if(is.data.frame(loc)) loc <- as.matrix(loc)
+  if(is.data.frame(locp)) locp <- as.matrix(locp)
+  if(is.vector(loc)) loc <- matrix(loc,,2)
+  if(is.vector(locp)) locp <- matrix(locp,,2)
+  if( (!is.matrix(loc)) || (!is.matrix(locp)) ){
+    stop("Both loc and locp needs to be a matrix or data.frame!")
+    return()
+  }
   n <- nrow(loc); np <- nrow(locp)
   dst <- function(t){sqrt((t[1]-t[3])^2+(t[2]-t[4])^2)}
   res <- matrix(0, np,n )
@@ -58,7 +85,7 @@ U2Z <- function(U, cov.par, rho.family = "rhoPowerExp"){
     } else if(rho.family=="rhoMatern"){
         Z <- s^2* rhoMatern(U, a, k)
       } else {
-          cat("Notice: rho.family=", rho.family, " doesn't exist! rho.family=rhoPowerExp will be used.\n", sep="")
+          cat("Notice: rho.family=", rho.family, " is not appropriate! rho.family=rhoPowerExp will be used.\n", sep="")
           Z <- s^2* rhoPowerExp(U, a, k)
         }
   Z

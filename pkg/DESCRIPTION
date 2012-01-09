@@ -1,20 +1,20 @@
-Package: myPackage
+Package: geoCount
 Type: Package
-Title: Estimation and Model Checking for GLSM
-Version: 1.2
-Date: 2011-09-25
+Title: Analysis and Modeling for Geostatistical Count Data
+Version: 1.1
+Date: 2011-12-17
 Author: Liang Jing
 Maintainer: Liang Jing <ljing918@gmail.com>
-Description: This package mainly deals with generalized linear spatial models.
- 1)It performs posterior sampling for parameter estimation, prediction, 
- and model checking in hierarchical models with correlated latent variables; 
- 2) C++ programs are seamlessly embedded to handle heavy computational 
- tasks of Markov chain generation and large matrices computation;
- 3) Parallel computing techniques are implemented to further speed 
- up estimation and prediction; 
- 4) results are displayed by a combination of numerical and graphical summaries.
+Description: This package provides a variety of functions to analyze and model geostatistical count data with generalized linear spatial models, including
+ 1) simulate and visualize the data;
+ 2) posterior sampling with robust MCMC algorithms (in serial or parallel way);
+ 3) perform prediction for unsampled locations;
+ 4) conduct Bayesian model checking procedure to evaluate the goodness of fitting;
+ 5) conduct transformed residual checking procedure.
+ In the package, seamlessly embedded C++ programs and parallel computing techniques are implemented to speed up the computing processes.
 License: GPL (>= 2)
-LazyLoad: yes
-Depends: R (>= 2.12.0), Rcpp (>= 0.9.4)
-LinkingTo: Rcpp, RcppGSL, RcppArmadillo
-Suggests: distrEx, coda, multicore, snow, snowfall, Rmpi
+LazyLoad: Yes
+Depends: R (>= 2.12.0), Rcpp (>= 0.9.7), RcppArmadillo (>= 0.2.29)
+LinkingTo: Rcpp, RcppArmadillo
+Suggests: coda, distrEx, reldist, snow, snowfall, multicore
+Packaged: 2012-01-09 09:39:40 UTC; dying

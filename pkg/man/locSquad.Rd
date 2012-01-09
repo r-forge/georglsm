@@ -12,7 +12,7 @@ locSquad(a, np)
 }
 
 \description{
-  This function simulates a given number of locations equally distributed on the square.
+  This function simulates a given number of locations equally distributed on a square.
 }
 
 \details{
@@ -20,7 +20,7 @@ locSquad(a, np)
 }
 
 \value{
-  A (4*np-4)*2 matrix indicates the x-y coordinates of the locations.
+  A \eqn{(4\times np-4) \times 2} matrix indicates the x-y coordinates of the locations.
 }
 
 \author{
@@ -35,8 +35,9 @@ locSquad(a, np)
 
 \seealso{
    \code{\link{locCircle}},
+   \code{\link{locGrid}},
    \code{\link{simData}},
    \code{\link{plotData}}.
 }
 
-\keyword{location}
+\keyword{Location}

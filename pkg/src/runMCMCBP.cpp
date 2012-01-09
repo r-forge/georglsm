@@ -291,7 +291,7 @@ return List::create( _["S.posterior"] = Ssave,
 	_["s.posterior"] = ssave,
 	_["a.posterior"] = asave,
 	_["k.posterior"] = ksave,
-	_["Acceptance Rate"] = acc );
+	_["AccRate"] = acc );
 }
 else
 {
@@ -302,7 +302,7 @@ return List::create( _["S.posterior"] = Ssave,
 	_["m.posterior"] = msave,
 	_["s.posterior"] = ssave,
 	_["a.posterior"] = asave,
-	_["Acceptance Rate"] = acc );
+	_["AccRate"] = acc );
 }
 
 

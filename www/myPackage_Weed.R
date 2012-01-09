@@ -18,7 +18,7 @@ n <- nrow(dat)
 YRaw <- dat[,3]
 locRaw <- dat[,1:2]
 locRaw.u <- unifLoc(locRaw)
-plotData(YRaw, locRaw)
+plotData(YRaw, locRaw, xlab="", ylab="")
 
 # randomly choose 60 observations as training data
 set.seed(111)
@@ -26,7 +26,7 @@ ind <- sample(1:n, 60, replace=FALSE)
 L <- rep(1, length(ind))
 Y <- YRaw[ind]
 loc <- locRaw.u[ind,]
-plotData(Y/L, loc, size=c(0.3, 3.7))
+plotData(Y/L, loc, size=c(0.3, 3.7), xlab="", ylab="")
 
 # tuning and run MCMC algorithm
 input0 <- MCMCinput( run=2000, run.S=1, rho.family="rhoPowerExp", 
@@ -92,12 +92,18 @@ locp <- locRaw.u[ind.p,]
 Lp <- rep(1, nrow(locp)) 
 # prediction
 Ypred <- predY(res.m, loc, locp, X=NULL, Xp=NULL, Lp=Lp, k=1, 
-          rho.family="rhoPowerExp", Y.family="Poisson")
+               rho.family="rhoPowerExp", Y.family="Poisson"
+               #, mc = TRUE, n.cores = 4
+               )
 Ypred.avg <- rowMeans(Ypred$Y); 
+Ypred.mode <- apply(Ypred$Y, 1, findMode)
 # plot observed, predicted and actual data
 #op <- par(mfrow=c(2,1))
 plotData(Y/L, locRaw[ind,], Ypred.avg/Lp, locRaw[ind.p,], 
-          YRaw[ind.p]/Lp, locRaw[ind.p,])
+          YRaw[ind.p]/Lp, locRaw[ind.p,], xlab="", ylab="")
+plotData(Y/L, locRaw[ind,], Ypred.mode/Lp, locRaw[ind.p,], 
+          YRaw[ind.p]/Lp, locRaw[ind.p,], xlab="", ylab="")
 plot(Ypred.avg/Lp, YRaw[ind.p]/Lp, xlab="Predicted values", ylab="Actual values")
+points(Ypred.mode/Lp, YRaw[ind.p]/Lp, pch=2, col=3)
 abline(c(0,1), col=2)
 #par(op)

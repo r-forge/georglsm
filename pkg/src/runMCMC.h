@@ -4,7 +4,7 @@
 // Add C++ code to pkg src/ directory.
 #include <Rcpp.h>
 #include <RcppArmadillo.h>
-#include <RcppGSL.h>
+//#include <RcppGSL.h>
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_sf_gamma.h>
 #include <gsl/gsl_cdf.h>

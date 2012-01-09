@@ -1,27 +1,27 @@
 \name{BMCT}
 \alias{BMCT}
 
-\title{Bayesian Model Checking}
+\title{Perform Bayesian Model Checking}
 
 \usage{
 BMCT(Y.obs, Y.rep, funcT, ifplot = FALSE)
 }
 
 \arguments{
-  \item{Y.obs}{the observed data set.}
-  \item{Y.rep}{the replicated data sets.}
-  \item{funcT}{the dignostic statistic.}
-  \item{ifplot}{whether plot the distribution of dignostic statistic.}
+  \item{Y.obs}{a vector which indicates the observed data set}
+  \item{Y.rep}{a matrix which indicates the reference data sets}
+  \item{funcT}{a function which defines the dignostic statistic}
+  \item{ifplot}{a logical value which indicates whether plot the dignostic statistics}
 }
 
 \description{
-  This function conducts Bayesian model checking by comparing observed and replicated data sets and plots the distribution of dignostic statistic.}
+  This function conducts Bayesian model checking by comparing observed and reference data sets and reveals the result via "p-value" and "RPS" (as well as the plot).}
 
 \details{
-  ...
+  
 } 
 \value{
- The checking result: p-value and RPS.
+ A vector of p-value and RPS.
 }
 
 \author{
@@ -39,4 +39,4 @@ BMCT(Y, Yrep.eb, funcT, ifplot=TRUE)  }
 \code{\link{repYeb}}, \code{\link{repYpost}}, \code{\link{pRPS}}, \code{\link{plot_pRPS}}
 }
 
-\keyword{Model Checking}
+\keyword{Bayesian Model Checking}

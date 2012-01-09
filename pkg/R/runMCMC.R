@@ -5,10 +5,10 @@
 #### Call runMCMCBPcpp() in C++
 ####################################
 runMCMC_ <- function(Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_){
-  .Call( "runMCMCBPcpp", Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_, PACKAGE = "myPackage" )
+  .Call( "runMCMCBPcpp", Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_, PACKAGE = "geoCount" )
 }
 runMCMCpartialPois_ <- function(Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famT_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_){
-  .Call( "runMCMCpartialPoiscpp", Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famT_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_, PACKAGE = "myPackage" )
+  .Call( "runMCMCpartialPoiscpp", Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famT_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_, PACKAGE = "geoCount" )
 }
 ####################################
 #### set up MCMCinput
@@ -52,7 +52,7 @@ if(!is.null(MCMCinput)){
     warning("\nL contains zero!\nL is set to 1 for all locations!")
     } else { L <- matrix(L,,1)}
   U <- loc2U(loc)
-  D <- cbind( rep(1, nrow(Y)), X )
+  D <- as.matrix(cbind( rep(1, nrow(Y)), X ))
   
   if(rho.family=="rhoPowerExp"){
       fam = 1
@@ -160,7 +160,7 @@ runMCMC.sf <- function(Y, L=0, loc=loc, X=NULL,
     phi.bound = c(0.005, 1), 
     initials = list(c(1), 1.5, 0.2, 1), 
     MCMCinput=NULL, partial = FALSE, famT=1,
-    n.chn = 2, cluster.type="SOCK", n.cores = getOption("cores")) {
+    n.chn = 2, n.cores = getOption("cores"), cluster.type="SOCK") {
       
 if(!is.null(MCMCinput)){
   run <- MCMCinput$run; run.S <- MCMCinput$run.S
@@ -184,7 +184,7 @@ ini <- lapply( 1:n.chn, function(tt)
   
 sfInit(parallel=TRUE, cpus= n.cores, type=cluster.type)
 sfExportAll( except=NULL, debug=FALSE )
-sfLibrary(myPackage)
+sfLibrary(geoCount)
 sfClusterSetupRNG()
   message("### MCMC Starts!\n")
   t0 <- proc.time()
@@ -208,7 +208,7 @@ sfStop()
 ####################################
 #### Prediction at new locations
 ####################################
-predY <- function(res.m, loc, locp, X=NULL, Xp=NULL, Lp=0, k=1, rho.family="rhoPowerExp", Y.family="Poisson", mc=FALSE){
+predY <- function(res.m, loc, locp, X=NULL, Xp=NULL, Lp=0, k=1, rho.family="rhoPowerExp", Y.family="Poisson", parallel=NULL, n.cores = getOption("cores"), cluster.type="SOCK"){
 
 t0 <- proc.time()
 
@@ -233,9 +233,42 @@ if( !is.null(res.m$k) ){
 
   message("### Prediction Starts!\n")
 
-if(!mc){
-  res.prl <- lapply(1:ns, function(i){
-  
+if(is.null(parallel)){
+  res.prl <- lapply(1:ns, function(i){  
+x <-res.m$S[,i]; 
+s <- res.m$s[i]; a <- res.m$a[i]; k <- k.post[i]
+if(is.matrix(res.m$m)){
+  m <- res.m$m[,i]
+  } else m <- res.m$m[i]
+
+mu.x <- Dx%*%m; mu.y <- Dy%*%m
+
+  if(rho.family=="rhoPowerExp"){
+      Z.xx <- s^2* rhoPowerExp(Uxx, a, k)
+      Z.yy <- s^2* rhoPowerExp(Uyy, a, k)
+      Z.yx <- s^2* rhoPowerExp(Uyx, a, k)
+    } else if(rho.family=="rhoMatern"){
+        Z.xx <- s^2* rhoMatern(Uxx, a, k)
+        Z.yy <- s^2* rhoMatern(Uyy, a, k)
+        Z.yx <- s^2* rhoMatern(Uyx, a, k)
+      } else {
+          stop(paste("rho.family=", rho.family, " is not appropriate!", sep=""))
+        }
+E <- mu.y + Z.yx%*%solve(Z.xx)%*%(x-mu.x)
+V <- Z.yy - Z.yx%*%solve(Z.xx)%*%t(Z.yx)
+z <- rnorm(np)
+y <- E + chol(V)%*%z
+Sp.post[,i] <- y; 
+if(Y.family=="Poisson"){
+  Yp[,i] <- rpois(np, Lp*exp(y))
+  } else if(Y.family=="Binomial"){
+          Yp[,i] <- rbinom(np, Lp, exp(y)/(1+exp(y)))
+          }
+c(Sp.post[,i], Yp[,i])
+} 
+  ) # end of lapply()
+} else if(parallel=="multicore"){
+  res.prl <- mclapply(1:ns, function(i){  
 x <-res.m$S[,i]; 
 s <- res.m$s[i]; a <- res.m$a[i]; k <- k.post[i]
 if(is.matrix(res.m$m)){
@@ -269,11 +302,14 @@ if(Y.family=="Poisson"){
           Yp[,i] <- rbinom(np, Lp, exp(y)/(1+exp(y)))
           }
 c(Sp.post[,i], Yp[,i])
-} 
-  )
-} else {
-  res.prl <- mclapply(1:ns, function(i){
-  
+}, mc.cores = n.cores
+  ) # end of mclapply()
+} else if(parallel=="snowfall"){
+sfInit(parallel=TRUE, cpus= n.cores, type=cluster.type)
+sfExportAll( except=NULL, debug=FALSE )
+sfLibrary(geoCount)
+sfClusterSetupRNG()
+  res.prl <- sfLapply(1:ns, function(i){  
 x <-res.m$S[,i]; 
 s <- res.m$s[i]; a <- res.m$a[i]; k <- k.post[i]
 if(is.matrix(res.m$m)){
@@ -307,8 +343,9 @@ if(Y.family=="Poisson"){
           Yp[,i] <- rbinom(np, Lp, exp(y)/(1+exp(y)))
           }
 c(Sp.post[,i], Yp[,i])
-} 
-  )
+}
+              ) # end of sfLapply()
+sfStop()
 }
 
 run.time <- proc.time() - t0
@@ -316,10 +353,12 @@ run.time <- proc.time() - t0
   message("### Prediction Running Time: ")
   print(run.time)
 res <- matrix(unlist(res.prl),,ns)
-list(Sp.posterior=res[1:np,], Y.predict=res[(np+1):(2*np),])
+list(latent.predict=res[1:np,], Y.predict=res[(np+1):(2*np),])
 
 }
-
+#################
+#### END
+#################
 
 
 

@@ -1,34 +1,42 @@
 \name{predY}
 \alias{predY}
 
-\title{Predict for Given Locations}
+\title{Predict for Unsampled Locations}
 
 \usage{
 predY(res.m, loc, locp, X = NULL, Xp = NULL, Lp = 0, k = 1, 
-      rho.family = "rhoPowerExp", Y.family = "Poisson")
+      rho.family = "rhoPowerExp", Y.family = "Poisson", 
+      parallel = NULL, n.cores = getOption("cores"), 
+      cluster.type = "SOCK")
 }
 
 \arguments{
-  \item{res.m}{the posterior samples of latent variables and parameters at observed locations.}
-  \item{loc}{the observed locations.}
-  \item{locp}{the predicted locations.}
-  \item{X}{the covariate matrix for observed locations.}
-  \item{Xp}{the covariate matrix for predicted locations.}
-  \item{Lp}{the time duration for predicted locations.}
-  \item{k}{\eqn{\kappa} for correlation function.}
-  \item{rho.family}{\code{"rhoPowerExp"} indicates powered exponential correlation function.}
-  \item{Y.family}{the distribution for response variables.}
+  \item{res.m}{a list with elements containing the posterior samples of latent variables and parameters for observed locations}
+  \item{loc}{a matrix which indicates the coordinates of the observed locations}
+  \item{locp}{a matrix which indicates the coordinates of the predicting locations}
+  \item{X}{the covariate matrix for observed locations}
+  \item{Xp}{the covariate matrix for predicting locations}
+  \item{Lp}{a vector which indicates the time duration during which the Poisson counts are accumulated or the total number of trials for Binomial response; if 0 is found in the vector, 1 will be used to replace all the values in the vector}
+  \item{k}{a value for fixed \eqn{\kappa}; ignored if there are posterior samples for \eqn{\kappa} in "res.m"}
+  \item{rho.family}{take the value of \code{"rhoPowerExp"} or \code{"rhoMatern"} which indicates the powered exponential or Matern correlation function is used}
+  \item{Y.family}{take the value of \code{"Poisson"} or \code{"Binomial"} which indicates Poisson or Binomial distribution for response variables}
+  \item{parallel}{the default input \code{NULL} indicates no parallel computing will be applied; the input value \code{"multicore"} or \code{"snowfall"} indicates parallel computing with the help of \code{{multicore}} or \code{{snowfall}} package will be applied
+  a logical value which indicates if the parallel computing should be used for prediction}
+  \item{n.cores}{the number of CPUs that will be used for parallel computing; used only if \code{parallel} isn't \code{NULL}}
+  \item{cluster.type}{type of cluster to be used for parallel computing; can be "SOCK", "MPI", "PVM", or "NWS"; used only if \code{parallel="snowfall"}}
 }
 
 \description{
-  This function generates posterior predictive samples of latent and reponse variables for predicted locations.}
+  This function generates posterior predictive samples of latent and response variables for predicting locations.}
 
 \details{
-  ...
+  This function performs parallel computing with the help of \code{{multicore}} or \code{{snowfall}} package. Be aware that \code{{multicore}} package currently is not available in Windows (so set \code{parallel="snowfall"} if you want to do parallel prediction in Windows).
 }
 
 \value{
- A list of posterior predictive samples.
+ A list with elements:
+ \item{S.predict}{a matrix containing the posterior predictive samples for latent variables}
+ \item{Y.predict}{a matrix containing the posterior predictive samples for response variables}
 }
 
 \author{
@@ -37,8 +45,11 @@ predY(res.m, loc, locp, X = NULL, Xp = NULL, Lp = 0, k = 1,
 
 \examples{
 \dontrun{
-locp <- matrix(runif(200),,2)
-Ypred <- predY(res.m, loc, locp, X=loc, Xp=locp, k=1, rho.family="rhoPowerExp")
+Ypred <- predY(res.m, loc, locp, X=loc, Xp=locp, k=1, 
+               rho.family = "rhoPowerExp", Y.family = "Poisson")
+# require(multicore)
+# Ypred <- predY(res.m, loc, locp, X=loc, Xp=locp, 
+#                parallel="multicore", n.cores = 4)
 Ypred.avg <- rowMeans(Ypred$Y); EYpred.avg <- rowMeans(exp(Ypred$Sp))
 }
 }
@@ -47,4 +58,4 @@ Ypred.avg <- rowMeans(Ypred$Y); EYpred.avg <- rowMeans(exp(Ypred$Sp))
    \code{\link{runMCMC}}, \code{\link{runMCMC.multiChain}}.
 }
 
-\keyword{prediction}
+\keyword{MCMC}
