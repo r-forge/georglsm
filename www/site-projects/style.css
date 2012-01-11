@@ -1,5 +1,5 @@
 body {
-	background: #CACACA repeat-x;
+	background: #FFFFFF repeat-x;
 	font-family: "Trebuchet MS", Verdana, serif
 }
 #container {
@@ -13,8 +13,8 @@ body {
 #sub_header {
 	text-align: right;
 	font-weight: bold;
-	font-size: 20px;
-	color: #FFFFFF;
+	font-size: 16px;
+	color: #888888 ;
 	padding-right: 20px;
 	padding-bottom: 20px;
 }
@@ -62,9 +62,9 @@ body {
      }	 
 #header h1 {
 	margin-bottom: 0px;
-	font-size: 28px;
+	font-size: 24px;
 	font-weight: bold;
-	color: #6F6868
+	color: #505050
 }
 .content h2 {
 	margin-top: 0px;
@@ -98,7 +98,7 @@ body {
 
 
 a {
-	color: #6F6868;
+	color: #A40008;
 	font-weight: bold;
 	text-decoration: none
 }
