@@ -31,7 +31,7 @@ unifLoc(loc, length=1)
 \examples{
 \dontrun{
   loc <- locGrid(1, 2, 10, 5)
-  plot(unifLoc(loc, scale=1))
+  plot(unifLoc(loc, length=1))
 }
 }
 

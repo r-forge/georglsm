@@ -69,6 +69,9 @@ locUloc_R <- function(loc, locp){
 #### Correlation functions
 ####################################
 rhoPowerExp <- function(u, a, k) { exp(-(u/a)^k ) }
+rhoSph <- function(u, a, k=NULL) { 
+  ifelse(u < a, 1 - 1.5*(u/a) + 0.5*(u/a)^3, 0) 
+}
 rhoMatern <- function(u, a, k){
   phi <- a; kappa <- k
   res <- ifelse(u > 0,   ( 2^(1-kappa) / gamma(kappa) ) * (u/phi)^kappa * 
@@ -84,6 +87,8 @@ U2Z <- function(U, cov.par, rho.family = "rhoPowerExp"){
       Z <- s^2* rhoPowerExp(U, a, k)
     } else if(rho.family=="rhoMatern"){
         Z <- s^2* rhoMatern(U, a, k)
+      } else if(rho.family=="rhoSph"){
+          Z <- s^2* rhoSph(U, a, k)
       } else {
           cat("Notice: rho.family=", rho.family, " is not appropriate! rho.family=rhoPowerExp will be used.\n", sep="")
           Z <- s^2* rhoPowerExp(U, a, k)

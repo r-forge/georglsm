@@ -9,7 +9,7 @@ U2Z(U, cov.par, rho.family = "rhoPowerExp")
 \arguments{
   \item{U}{a \eqn{n \times n} matrix which indicates the distance between locations}
   \item{cov.par}{a vector of length 3 that indicates the value of \eqn{(\sigma,\phi,\kappa)} }
-  \item{rho.family}{take the value of \code{"rhoPowerExp"} or \code{"rhoMatern"} which indicates the powered exponential or Matern correlation function is used}
+  \item{rho.family}{take the value of \code{"rhoPowerExp"}, \code{"rhoMatern"}, or \code{"rhoSph"} which indicates the powered exponential, Matern, or Spherical correlation function is used}
 }
 
 \description{

@@ -31,12 +31,12 @@ res.mix
 ####################################
 #### Plot autocorrelations
 ####################################
-plotACF <- function(S.mcmc, lags = NULL){
+plotACF <- function(S.mcmc, lags = NULL, ...){
 for(i in 1:nrow(S.mcmc)){
   temp <- acf(S.mcmc[i,], plot=FALSE, lag.max = lags)
   if(i==1){
     plot(as.vector(temp$lag), as.vector(temp$acf), 
-        type="l", xlab="Lag", ylab="Autocorrelation")
+        type="l", xlab="Lag", ylab="Autocorrelation", ...)
   } else lines(temp$lag, temp$acf)
 }
 }

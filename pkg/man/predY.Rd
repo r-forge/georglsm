@@ -35,7 +35,7 @@ predY(res.m, loc, locp, X = NULL, Xp = NULL, Lp = 0, k = 1,
 
 \value{
  A list with elements:
- \item{S.predict}{a matrix containing the posterior predictive samples for latent variables}
+ \item{latent.predict}{a matrix containing the posterior predictive samples for latent variables}
  \item{Y.predict}{a matrix containing the posterior predictive samples for response variables}
 }
 
@@ -50,7 +50,7 @@ Ypred <- predY(res.m, loc, locp, X=loc, Xp=locp, k=1,
 # require(multicore)
 # Ypred <- predY(res.m, loc, locp, X=loc, Xp=locp, 
 #                parallel="multicore", n.cores = 4)
-Ypred.avg <- rowMeans(Ypred$Y); EYpred.avg <- rowMeans(exp(Ypred$Sp))
+Ypred.avg <- rowMeans(Ypred$Y); EYpred.avg <- rowMeans(exp(Ypred$latent))
 }
 }
 

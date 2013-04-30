@@ -66,15 +66,50 @@ double loglSS(mat S, mat Zinv, mat D, mat m)
     return(res);
 }
 
-double logll(mat S, mat Zinv, mat D, mat m, mat Z, mat C)
+double logll(mat S, mat Zinv, mat D, mat m, mat Z, mat C, mat Omg, double s, double a)
 {
-    double res = as_scalar( - 0.5*log(det(Z)) - 0.5*trans(S-D*m)*Zinv*(S-D*m) + log(det(C)) );
+    double res = as_scalar( -0.5*log(det(Z)) - 0.5*trans(S-D*m)*Zinv*(S-D*m) + log(det(C)) + log(det(chol(Omg))) + log(a*(2+s)) );
     return(res);
+}
+
+
+double logPiSig_Halft(double s, double A, double df)
+{
+    return(-(df+1)/2)*log(1 + s*s/(A*A*df));
+}
+
+double logPiSig_InvGamma(double s, double shape, double scale)
+{
+    return(-(shape+1)*log(s) - scale/s);
+}
+
+double logPiSig_Recip(double s, double a, double b)
+{
+    return(-log(s));
 }
 
 mat rhoPowExp(mat T, double a, double k)
 {
 	return( exp(-pow(T/a,k)) );
+}
+
+mat rhoSph(mat T, double a, double k)
+{
+	mat R = ones<mat>(T.n_rows,T.n_cols);
+	double u;
+	for(int i=0; i < T.n_rows; i++)
+	{
+		for(int j=0; j < T.n_cols; j++)
+		{
+			u = T(i,j);
+			if(u > 0)
+			{
+				if(u < a) R(i,j) = 1 - 1.5 * (u/a) + 0.5 * pow(u/a, 3);
+				else R(i,j) = 0 ;
+			}
+		}
+	}
+	return( R );
 }
 
 mat rhoMatern(mat T, double a, double k)

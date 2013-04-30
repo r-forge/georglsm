@@ -17,7 +17,7 @@ rhoMatern(u, a, k)
 }
 
 \details{
-The function is \eqn{\; \;\rho (u)= [2]^{\kappa-1} (-u/\phi)^\kappa K_\kappa(-u/\phi) \; \;} 
+The function is \eqn{\; \;\rho (u)= [2^{\kappa-1}\tau(\kappa)]^{-1} (-u/\phi)^\kappa K_\kappa(-u/\phi) \; \;} 
 where \eqn{K_\kappa(\cdot)} denotes a modified Bessel function of order \eqn{\kappa}.
 }
 
@@ -37,6 +37,7 @@ where \eqn{K_\kappa(\cdot)} denotes a modified Bessel function of order \eqn{\ka
 
 \seealso{
    \code{\link{rhoPowerExp}},
+   \code{\link{rhoSph}},
    \code{\link{U2Z}},
    \code{\link{loc2U}}.
 }

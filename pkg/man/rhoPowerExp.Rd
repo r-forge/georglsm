@@ -38,6 +38,7 @@ rhoPowerExp(u, a, k)
 
 \seealso{
    \code{\link{rhoMatern}},
+   \code{\link{rhoSph}},
    \code{\link{U2Z}},
    \code{\link{loc2U}}.
 }

@@ -4,7 +4,7 @@
 \title{Weed Data}
 
 \usage{
-data(datWeed)
+data(Weed)
 }
 
 \arguments{
@@ -30,7 +30,7 @@ used to estimate the counts with the help of certain image analysis algorithm. G
 
 \examples{
 \dontrun{
-data(datWeed)
+data(Weed)
 str(Weed)
 plotData(Weed[,3], Weed[,1:2], Weed[,4], Weed[,1:2], 
          xlab="Eastings", ylab="Northings")

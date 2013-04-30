@@ -2,7 +2,9 @@
 #### Simulate locations
 ####################################
 locGrid <- function(x, y, nx, ny){
-  expand.grid(seq(0, x, length=nx), seq(0, y, length=ny))
+  res <- as.matrix(expand.grid(seq(0, x, length=nx), seq(0, y, length=ny)))
+  colnames(res) <- NULL
+  res
 }
 locCircle <- function(r, np){
   agl <- seq(0, 2*pi, length=np+1)[1:np]
@@ -24,7 +26,7 @@ simData <- function(loc, L=0, X=NULL, beta=0, cov.par, rho.family = "rhoPowerExp
 
   if(any(L==0)){
     L <- matrix(rep(1,n),,1)
-    warning("\nL contains zero!\nL is set to 1 for all locations!")
+    message("\nL contains zero!\nL is set to 1 for all locations!")
     } else { L <- matrix(L,,1)}
     
   U <- loc2U(loc)

@@ -68,15 +68,15 @@ Y <- dat$data
           )
 ## plot with boundaries
 data(TexasCounty_boundary)
-plotDataBD(TexasCounty.boundary, xlab = "Longitude", ylab = "Latitude")
+plotData(bdry = TexasCounty.boundary, xlab = "Longitude", ylab = "Latitude")
 
 ########################
 ### Integrated Data Sets
 ########################
 ## Rongelap data
-data(datRongelap)
+data(Rongelap)
 str(Rongelap)
-plotDataBD(Rongelap$borders, Rongelap$data, Rongelap$coords)
+plotData(bdry = Rongelap$borders, Y = Rongelap$data, loc = Rongelap$coords)
 
 ## Weed data
 data(datWeed)
@@ -118,7 +118,7 @@ input <- MCMCinput( run = 10000, run.S = 10,
 ### Run MCMC Algorithms
 ########################
 ## For example of analyzing Weed data,
-  data(datWeed)
+  data(Weed)
   input.Weed <- MCMCinput( run=2000, run.S=1, rho.family="rhoPowerExp", 
           Y.family = "Poisson", ifkappa=0,
           scales=c(0.2, 3.5, 0.9, 0.6, 0.5), 

@@ -4,8 +4,8 @@
 #### runMCMC_: internal
 #### Call runMCMCBPcpp() in C++
 ####################################
-runMCMC_ <- function(Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_){
-  .Call( "runMCMCBPcpp", Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_, PACKAGE = "geoCount" )
+runMCMC_ <- function(Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famSig_, par1_, par2_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_){
+  .Call( "runMCMCBPcpp", Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famSig_, par1_, par2_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_, PACKAGE = "geoCount" )
 }
 runMCMCpartialPois_ <- function(Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famT_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_){
   .Call( "runMCMCpartialPoiscpp", Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famT_, ifkappa_, scale_, mscale_, sscale_, ascale_, kscale_, alow_, aup_, mini_, sini_, aini_, kini_, PACKAGE = "geoCount" )
@@ -14,12 +14,16 @@ runMCMCpartialPois_ <- function(Y_, L_, T_, D_, run_, nmLan_, fam_, famY_, famT_
 #### set up MCMCinput
 ####################################
 MCMCinput <- function( run = 200, run.S = 1,
-    rho.family = "rhoPowerExp", Y.family = "Poisson", ifkappa = 0,
+    rho.family = "rhoPowerExp", 
+    Y.family = "Poisson", 
+    priorSigma = "Halft", parSigma = c(1, 1),
+    ifkappa = 0,
     scales = c(0.5, 1.65^2+0.8, 0.8, 0.7, 0.15), 
     phi.bound = c(0.005, 1), 
     initials = list(c(1), 1.5, 0.2, 1) ){
     list( run=run, run.S=run.S, rho.family=rho.family, 
-          Y.family=Y.family, ifkappa=ifkappa,
+          Y.family=Y.family, priorSigma=priorSigma,
+          parSigma=parSigma, ifkappa=ifkappa,
           scales=scales, phi.bound=phi.bound, initials=initials )  
     }
 ####################################
@@ -27,7 +31,10 @@ MCMCinput <- function( run = 200, run.S = 1,
 ####################################
 runMCMC <- function( Y, L=0, loc, X=NULL, 
     run = 200, run.S = 1,
-    rho.family = "rhoPowerExp", Y.family = "Poisson", ifkappa = 0,
+    rho.family = "rhoPowerExp", 
+    Y.family = "Poisson", 
+    priorSigma = "Halft", parSigma = c(1, 1),
+    ifkappa = 0,
     scales = c(0.5, 1.65^2+0.8, 0.8, 0.7, 0.15), 
     phi.bound = c(0.005, 1), 
     initials = list(c(1), 1.5, 0.2, 1), 
@@ -35,7 +42,10 @@ runMCMC <- function( Y, L=0, loc, X=NULL,
       
 if(!is.null(MCMCinput)){
   run <- MCMCinput$run; run.S <- MCMCinput$run.S
-  rho.family <- MCMCinput$rho.family; Y.family <- MCMCinput$Y.family;
+  rho.family <- MCMCinput$rho.family
+  Y.family <- MCMCinput$Y.family
+  priorSigma <- MCMCinput$priorSigma
+  parSigma <- MCMCinput$parSigma
   ifkappa <- MCMCinput$ifkappa
   scales <- MCMCinput$scales; 
   phi.bound <- MCMCinput$phi.bound
@@ -43,13 +53,13 @@ if(!is.null(MCMCinput)){
   }
   
   if(any(Y<=0)){
-      warning("\nY contains non-positive element! \n0.1 is added to all elements!")
+      message("\nY contains non-positive element and 0.1 is added to all elements.")
       Y <- Y+0.1
     } 
   Y <- matrix(Y,,1)
   if(any(L==0)){
     L <- matrix(rep(1,nrow(Y)),,1)
-    warning("\nL contains zero!\nL is set to 1 for all locations!")
+    message("\nL contains zero and L is set to 1 for all locations.")
     } else { L <- matrix(L,,1)}
   U <- loc2U(loc)
   D <- as.matrix(cbind( rep(1, nrow(Y)), X ))
@@ -58,10 +68,13 @@ if(!is.null(MCMCinput)){
       fam = 1
     } else if(rho.family=="rhoMatern"){
         fam = 2
+      } else if(rho.family=="rhoSph"){
+          fam = 3
       } else {
           warning( paste("\nrho.family=", rho.family, " doesn't exist! \nrho.family=rhoPowerExp is used!", sep="") )
           fam = 1
-        }
+      }
+        
   if(Y.family=="Poisson"){
       famY = 1
     } else if(Y.family=="Binomial"){
@@ -70,7 +83,20 @@ if(!is.null(MCMCinput)){
           warning( paste("\nY.family=", Y.family, " doesn't exist! \nY.family=Poisson is used!", sep="") )
           famY = 1
         }
-        
+
+par1 <- parSigma[1]
+par2 <- parSigma[2]
+if(priorSigma == "Halft"){
+  famSig = 1
+} else if(priorSigma == "InvGamma"){
+  famSig = 2
+} else if(priorSigma == "Reciprocal"){
+  famSig = 3
+} else {
+  warning( paste("\npriorSigma=", priorSigma, " doesn't exist! \npriorSigma=Reciprocal is used!", sep="") )
+  famSig = 3
+}
+
   scale <- scales[1]; mscale <- scales[2]; sscale <- scales[3]; 
   ascale <- scales[4]; kscale <- scales[5]
   alow <- phi.bound[1]; aup <- phi.bound[2]
@@ -83,7 +109,7 @@ if(!is.null(MCMCinput)){
   if(partial){
     res <- runMCMCpartialPois_(Y, L, U, D, run, run.S, fam, famY, famT, ifkappa, scale, mscale, sscale, ascale, kscale, alow, aup, mini, sini, aini, kini)
   } else {
-    res <- runMCMC_(Y, L, U, D, run, run.S, fam, famY, ifkappa, scale, mscale, sscale, ascale, kscale, alow, aup, mini, sini, aini, kini)
+    res <- runMCMC_(Y, L, U, D, run, run.S, fam, famY, famSig, par1, par2, ifkappa, scale, mscale, sscale, ascale, kscale, alow, aup, mini, sini, aini, kini)
   }
   run.time <- proc.time() - t0
   message("### MCMC Done!\n")
@@ -103,7 +129,9 @@ if(!is.null(MCMCinput)){
 ####################################
 runMCMC.multiChain <- function(Y, L=0, loc=loc, X=NULL, 
     run = 200, run.S = 1,
-    rho.family = "rhoPowerExp", Y.family = "Poisson", ifkappa = 0,
+    rho.family = "rhoPowerExp", Y.family = "Poisson", 
+    priorSigma = "Halft", parSigma = c(1, 1),
+    ifkappa = 0,
     scales = c(0.5, 1.65^2+0.8, 0.8, 0.7, 0.15), 
     phi.bound = c(0.005, 1), 
     initials = list(c(1), 1.5, 0.2, 1), 
@@ -112,13 +140,16 @@ runMCMC.multiChain <- function(Y, L=0, loc=loc, X=NULL,
       
 if(!is.null(MCMCinput)){
   run <- MCMCinput$run; run.S <- MCMCinput$run.S
-  rho.family <- MCMCinput$rho.family; Y.family <- MCMCinput$Y.family;
+  rho.family <- MCMCinput$rho.family
+  Y.family <- MCMCinput$Y.family
+  priorSigma <- MCMCinput$priorSigma
+  parSigma <- MCMCinput$parSigma
   ifkappa <- MCMCinput$ifkappa
   scales <- MCMCinput$scales; 
   phi.bound <- MCMCinput$phi.bound
   initials <- MCMCinput$initials
-  }
-  
+}
+
 ## set different starting points    
 s.ini <- 0.1*c( mean(initials[[1]]), initials[[2]], initials[[3]], initials[[4]])
 ini <- lapply( 1:n.chn, function(tt)
@@ -129,19 +160,20 @@ ini <- lapply( 1:n.chn, function(tt)
                   abs(initials[[4]]+s.ini[4]*rnorm(1)) )
             )
           )
-          
-  message("### MCMC Starts!\n")
+## MCMC        
+  message("### multiChain Starts!\n")
   t0 <- proc.time()
   res.prl <- mclapply(1:n.chn, function(t) 
               runMCMC(Y, L, loc, X, run, run.S, rho.family, Y.family, 
+                      priorSigma, parSigma,
                       ifkappa, scales, phi.bound, ini[[t]], MCMCinput=NULL,
                       partial, famT), 
                       mc.cores = n.cores
           )
   run.time <- proc.time() - t0
-  message("### MCMC Done!\n")
+  message("### multiChain Done!\n")
   
-  message("### MCMC Running Time: ")
+  message("### multiChain Running Time: ")
   print(run.time)
   message("### MCMC Acceptance Rate: ")
   print(sapply(res.prl, function(tt) tt$Acc))
@@ -164,13 +196,15 @@ runMCMC.sf <- function(Y, L=0, loc=loc, X=NULL,
       
 if(!is.null(MCMCinput)){
   run <- MCMCinput$run; run.S <- MCMCinput$run.S
-  rho.family <- MCMCinput$rho.family; Y.family <- MCMCinput$Y.family;
+  rho.family <- MCMCinput$rho.family
+  Y.family <- MCMCinput$Y.family
+  priorSigma <- MCMCinput$priorSigma
+  parSigma <- MCMCinput$parSigma
   ifkappa <- MCMCinput$ifkappa
   scales <- MCMCinput$scales; 
   phi.bound <- MCMCinput$phi.bound
   initials <- MCMCinput$initials
-  }
-  
+}
 ## set different starting points    
 s.ini <- 0.1*c( mean(initials[[1]]), initials[[2]], initials[[3]], initials[[4]])
 ini <- lapply( 1:n.chn, function(tt)
@@ -181,23 +215,24 @@ ini <- lapply( 1:n.chn, function(tt)
                   abs(initials[[4]]+s.ini[4]*rnorm(1)) )
             )
           )
-  
+## MCMC
 sfInit(parallel=TRUE, cpus= n.cores, type=cluster.type)
 sfExportAll( except=NULL, debug=FALSE )
 sfLibrary(geoCount)
 sfClusterSetupRNG()
-  message("### MCMC Starts!\n")
+  message("### multiChain Starts!\n")
   t0 <- proc.time()
   res.prl <- sfLapply(1:n.chn, function(t) 
               runMCMC(Y, L, loc, X, run, run.S, rho.family, Y.family, 
+                      priorSigma, parSigma,
                       ifkappa, scales, phi.bound, ini[[t]], MCMCinput=NULL,
                       partial, famT)
               )
   run.time <- proc.time() - t0
-  message("### MCMC Done!\n")
+  message("### multiChain Done!\n")
 sfStop()
 
-  message("### MCMC Running Time: ")
+  message("### multiChain Running Time: ")
   print(run.time)
   message("### MCMC Acceptance Rate: ")
   print(sapply(res.prl, function(tt) tt$Acc))
@@ -217,7 +252,7 @@ Sp.post <- Yp <- matrix(0,np,ns)
 
   if(any(Lp==0)){
     Lp <- matrix(rep(1,np),,1)
-    warning("\nLp contains zero!\nLp is set to 1 for all locations!")
+    message("\nLp contains zero and Lp is set to 1 for all locations.")
     } else { Lp <- matrix(Lp,,1)}
     
 Uxx <- loc2U(loc)

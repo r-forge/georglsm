@@ -4,7 +4,7 @@
 \title{Data Set of Rongelap Island}
 
 \usage{
-data(datRongelap)
+data(Rongelap)
 }
 
 \arguments{
@@ -32,7 +32,7 @@ A list with 4 elements:
 
 \examples{
 \dontrun{
-data(datRongelap)
+data(Rongelap)
 str(Rongelap)
 plotDataBD(Rongelap$borders, Rongelap$data, Rongelap$coords)
 }

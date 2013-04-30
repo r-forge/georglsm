@@ -164,8 +164,8 @@ for(int i=0; i<run; i++)
     mnew =  chol(Omgnew)*tildem + Omgnew*trans(D)*Otnew*Shat ;
     Snew = Cnew*S1+Bnew*mnew+Enew;
 
-    logp = as_scalar( (*logfY)(S, Y, L) + logll(S, Zinv, D, m, Z, C) + log( det(chol(Omg)) )   );
-    logq = as_scalar( (*logfY)(Snew, Y, L) + logll(Snew, Zinvnew, D, mnew, Znew, Cnew) + log( det(chol(Omgnew)) ) );
+    logp = as_scalar( (*logfY)(S, Y, L) + logll(S, Zinv, D, m, Z, C, Omg, s, a) );
+    logq = as_scalar( (*logfY)(Snew, Y, L) + logll(Snew, Zinvnew, D, mnew, Znew, Cnew, Omgnew, snew, anew) );
 
     if(anew < aup && anew > alow)
     {
@@ -207,8 +207,8 @@ for(int i=0; i<run; i++)
     mnew =  chol(Omgnew)*tildem + Omgnew*trans(D)*Otnew*Shat ;
     Snew = Cnew*S1+Bnew*mnew+Enew;
 
-    logp = as_scalar( (*logfY)(S, Y, L) + logll(S, Zinv, D, m, Z, C) + log( det(chol(Omg)) )   );
-    logq = as_scalar( (*logfY)(Snew, Y, L) + logll(Snew, Zinvnew, D, mnew, Znew, Cnew) + log( det(chol(Omgnew)) ) );
+    logp = as_scalar( (*logfY)(S, Y, L) + logll(S, Zinv, D, m, Z, C, Omg, s, a) );
+    logq = as_scalar( (*logfY)(Snew, Y, L) + logll(Snew, Zinvnew, D, mnew, Znew, Cnew, Omgnew, snew, anew) );
 
     if(anew < aup && anew > alow)
     {
@@ -254,8 +254,9 @@ if(ifkappa!=0)
     mnew =  chol(Omgnew)*tildem + Omgnew*trans(D)*Otnew*Shat ;
     Snew = Cnew*S1+Bnew*mnew+Enew;
 
-    logp = as_scalar( (*logfY)(S, Y, L) + logll(S, Zinv, D, m, Z, C) + log( det(chol(Omg)) )   );
-    logq = as_scalar( (*logfY)(Snew, Y, L) + logll(Snew, Zinvnew, D, mnew, Znew, Cnew) + log( det(chol(Omgnew)) ) );
+    logp = as_scalar( (*logfY)(S, Y, L) + logll(S, Zinv, D, m, Z, C, Omg, s, a) );
+    logq = as_scalar( (*logfY)(Snew, Y, L) + logll(Snew, Zinvnew, D, mnew, Znew, Cnew, Omgnew, snew, anew) );
+
     if(anew < aup && anew > alow)
     {
     	ruf_k = as_scalar(randu<vec>(1));
@@ -292,7 +293,7 @@ return List::create( _["S.posterior"] = Ssave,
 	_["s.posterior"] = ssave,
 	_["a.posterior"] = asave,
 	_["k.posterior"] = ksave,
-	_["AccRate"] = acc );	
+	_["AccRate"] = acc );
 }
 else
 {
@@ -303,7 +304,7 @@ return List::create( _["S.posterior"] = Ssave,
 	_["m.posterior"] = msave,
 	_["s.posterior"] = ssave,
 	_["a.posterior"] = asave,
-	_["AccRate"] = acc );	
+	_["AccRate"] = acc );
 }
 
 

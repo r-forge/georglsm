@@ -13,7 +13,7 @@ simData(loc, L = 0, X = NULL, beta = 0, cov.par,
   \item{X}{a \eqn{n \times p} covariate matrix; the default value "NULL" indicates no covariate}
   \item{beta}{a vector of length \eqn{(p+1)} that indicates the coefficients}
   \item{cov.par}{a vector of length 3 that indicates the value of \eqn{(\sigma,\phi,\kappa)} }
-  \item{rho.family}{take the value of \code{"rhoPowerExp"} or \code{"rhoMatern"} which indicates the powered exponential or Matern correlation function is used}
+  \item{rho.family}{take the value of \code{"rhoPowerExp"}, \code{"rhoMatern"}, or \code{"rhoSph"} which indicates the powered exponential, Matern, or Spherical correlation function is used}
   \item{Y.family}{take the value of \code{"Poisson"} or \code{"Binomial"} which indicates Poisson or Binomial distribution for response variables}
 }
 
